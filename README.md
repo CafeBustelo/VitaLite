@@ -1,4 +1,4 @@
-# VitaLite
+# CafeVitaLite
 VitaLite is a launcher for RuneLite that offers additional features and customization options.
 - Provides access to aditional GamePack functionalities
 - Robust built-in API SDK for plugin development
