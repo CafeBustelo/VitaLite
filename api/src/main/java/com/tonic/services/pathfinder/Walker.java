@@ -67,6 +67,7 @@ public class Walker
     @Setter
     private boolean useTeleports = true;
     private boolean justInteracted = false;
+    private int repathDelay = 0;
 
     private Walker()
     {
@@ -321,6 +322,7 @@ public class Walker
 
     private void reset()
     {
+        repathDelay = 0;
         teleport = null;
         cooldown = 0;
         timeout = 0;
@@ -647,7 +649,7 @@ public class Walker
     private boolean handlePassThroughObjects(Player local, List<Step> steps, Step step)
     {
         TileObjectEx object = new TileObjectQuery<>()
-                .withNamesContains("door", "gate")
+                .withNamesContains("door", "gate", "curtain")
                 .keepIf(o -> (o.getWorldLocation().equals(local.getWorldLocation()) || o.getWorldLocation().equals(step.getPosition())))
                 .sortNearest()
                 .first();
@@ -664,6 +666,10 @@ public class Walker
             return true;
         }
         else {
+            if (!PlayerAPI.isIdle(local))
+            {
+                return true;
+            }
             Logger.info("[Pathfinder] Failed to find Passthrough, atempting to circumvent");
             rePath(steps);
             return true;
